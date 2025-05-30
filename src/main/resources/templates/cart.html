@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <title>Your Cart | Asahi Ramen</title>
+    <style>
+        :root {
+            --primary-color: #F3EED9;    /* Light Cream (Background) */
+            --secondary-color: #3A1D14;  /* Deep Brown (Side Panel) */
+            --accent-color: #D72638;     /* Ramen Red (Highlights & Text) */
+            --white: #FFFFFF;            /* Pure White (Optional Usage) */
+            --text-color: #2B2B2B;       /* Dark Charcoal (Body Text) */
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+        }
+
+        .navbar {
+            background-color: var(--white) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 2rem;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--text-color) !important;
+            font-weight: 500;
+            padding: 0.8rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--accent-color) !important;
+            transform: translateY(-2px);
+        }
+
+        .cart-item {
+            background-color: var(--white);
+            border: 2px solid var(--text-color);
+            padding: 25px;
+            border-radius: 0;
+            margin-bottom: 20px;
+            box-shadow: 3px 3px 0 var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .cart-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .cart-item img {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid var(--text-color);
+            box-shadow: 3px 3px 0 var(--text-color);
+        }
+
+        .card {
+            background-color: var(--white);
+            border: 2px solid var(--text-color);
+            border-radius: 0;
+            box-shadow: 3px 3px 0 var(--text-color);
+            padding: 20px;
+        }
+
+        .list-group-item {
+            background-color: var(--white);
+            border-color: var(--text-color);
+            color: var(--text-color);
+            padding: 15px;
+        }
+
+        .btn-custom {
+            background-color: var(--white);
+            color: var(--text-color);
+            border: 2px solid var(--text-color);
+            padding: 8px 20px;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 0;
+            margin: 10px;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            box-shadow: 3px 3px 0 var(--text-color);
+        }
+
+        .btn-custom:hover {
+            background-color: var(--text-color);
+            color: var(--white);
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0 var(--text-color);
+        }
+
+        .discount-code input {
+            background-color: var(--white);
+            border: 2px solid var(--text-color);
+            color: var(--text-color);
+            padding: 12px 20px;
+            border-radius: 0;
+            box-shadow: 3px 3px 0 var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .discount-code input:focus {
+            border-color: var(--accent-color);
+            outline: none;
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0 var(--text-color);
+        }
+
+        .cart-header {
+            font-family: 'Fredoka', sans-serif;
+            color: var(--secondary-color);
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+
+        .product-name {
+            font-family: 'Fredoka', sans-serif;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .price-tag {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .remove-btn {
+            color: var(--accent-color);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+        }
+
+        .remove-btn:hover {
+            color: var(--text-color);
+            border-bottom: 2px solid var(--text-color);
+            text-decoration: none;
+        }
+
+        /* Sparkling animation */
+        @keyframes sparkle {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .sparkle {
+            display: inline-block;
+            animation: sparkle 1.5s infinite;
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img th:src="@{/images/logo.png}" alt="Logo" style="height: 40px; margin-right: 10px;">
+            Asahi Ramen
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto"></ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}" href="index.html"><i class="fas fa-home"></i> Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/shop}" href="shop.html"><i class="fas fa-utensils"></i>Our Ramen</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}" href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}" href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/cart}" href="cart.html"><i class="fas fa-shopping-cart sparkle"></i> Cart</a>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link" th:text="${cartCount}">0</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="container mt-5 pt-5">
+    <section class="mt-5 mb-4">
+        <div class="row">
+            <!-- Cart Items Section -->
+            <div class="col-lg-8">
+                <div class="card wish-list mb-4">
+                    <div class="card-body">
+                        <h2 class="cart-header">Your Order <i class="fas fa-bowl-food sparkle"></i></h2>
+
+                        <div class="row mb-4 cart-item" th:each="item, iStat : ${cart}">
+                            <div class="col-md-5 col-lg-3 col-xl-3">
+                                <img class="img-fluid w-100"
+                                     th:src="@{${'/productImages/' + item.imageName}}"
+                                     src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12a.jpg"
+                                     alt="Sample">
+                            </div>
+                            <div class="col-md-7 col-lg-9 col-xl-9">
+                                <div>
+                                    <h4 class="product-name" th:text="${item.name}">Product Name</h4>
+                                    <p class="mb-3">Quantity: <span th:text="${item.weight}"></span></p>
+                                    <p class="price-tag text-right">₹<span th:text="${item.price}"></span></p>
+                                    <div class="d-flex justify-content-end">
+                                        <a href="#!" th:href="@{/cart/removeItem/{index}(index=${iStat.index})}"
+                                           class="remove-btn"><i class="fas fa-trash-alt mr-2"></i>Remove</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="mb-4">
+                        <p class="text-muted mb-0"><i class="fas fa-info-circle mr-2"></i>Your order will be prepared once checkout is complete.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Section -->
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="mb-4">Order Summary</h4>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between">
+                                Subtotal <span>₹<span th:text="${total}"></span></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                Delivery <span class="text-success">Free</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <strong>Total Amount</strong> <span><strong>₹<span th:text="${total}"></span></strong></span>
+                            </li>
+                        </ul>
+                        <a th:href="@{/checkout}" href="orderPlaced.html" class="btn btn-custom btn-block mt-4">Place Order</a>
+                    </div>
+                </div>
+
+                <!-- Discount Section -->
+                <div class="card mb-4">
+                    <div class="card-body discount-code">
+                        <a class="d-flex justify-content-between align-items-center" data-toggle="collapse"
+                           href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                            <span>Have a Promo Code?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="collapse" id="collapseExample">
+                            <div class="mt-3">
+                                <input type="text" id="discount-code" class="form-control" placeholder="Enter your code">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</body>
+</html>

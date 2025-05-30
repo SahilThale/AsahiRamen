@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>View Product | Asahi Ramen</title>
+    <style>
+        :root {
+            --primary-color: #F3EED9;    /* Light Cream (Background) */
+            --secondary-color: #3A1D14;  /* Deep Brown (Side Panel) */
+            --accent-color: #D72638;     /* Ramen Red (Highlights & Text) */
+            --white: #FFFFFF;            /* Pure White (Optional Usage) */
+            --text-color: #2B2B2B;       /* Dark Charcoal (Body Text) */
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+        }
+
+        .navbar {
+            background-color: var(--white) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-family: 'Fredoka', sans-serif;
+            color: var(--secondary-color) !important;
+            font-weight: 700;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--text-color) !important;
+            font-weight: 500;
+            padding: 0.8rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--accent-color) !important;
+            transform: translateY(-2px);
+        }
+
+        .product-container {
+            margin-top: 2rem;
+            background-color: var(--white);
+            padding: 2rem;
+            border: 2px solid var(--text-color);
+            box-shadow: 3px 3px 0 var(--text-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image {
+            border: 2px solid var(--text-color);
+            transition: transform 0.3s ease;
+            box-shadow: 3px 3px 0 var(--text-color);
+        }
+
+        .product-image:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0 var(--text-color);
+        }
+
+        .product-title {
+            font-family: 'Fredoka', sans-serif;
+            color: var(--secondary-color);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+            padding-right: 50px; /* Added space for the ramen bowl */
+        }
+
+
+
+
+
+        .product-category {
+            color: var(--accent-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .product-price {
+            color: var(--accent-color);
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 1rem 0;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .product-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: var(--primary-color);
+            border: 2px solid var(--text-color);
+        }
+
+        .btn-custom {
+            background-color: var(--white);
+            color: var(--text-color);
+            border: 2px solid var(--text-color);
+            padding: 8px 20px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            box-shadow: 3px 3px 0 var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-custom:hover {
+            background-color: var(--text-color);
+            color: var(--white);
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0 var(--text-color);
+        }
+
+
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img th:src="@{/images/logo.png}" alt="Logo" style="height: 40px; margin-right: 10px;">
+           Asahi Ramen
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto"></ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}" href="index.html"><i class="fas fa-home"></i> Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/shop}" href="shop.html"><i class="fas fa-utensils"></i> Our Ramen</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}" href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}" href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/cart}" href="cart.html"><i class="fas fa-shopping-cart"></i> Cart</a>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link" th:text="${cartCount}">0</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="product-container">
+
+        <div class="row">
+            <div class="col-md-6">
+                <img class="product-image img-fluid" src="" th:src="@{${'/productImages/' + product.imageName}}"
+                     alt="Product Image">
+            </div>
+            <div class="col-md-6">
+                <h1 class="product-title" th:text="${product.name}"></h1>
+                <p class="product-category" th:text="${product.category.name}"></p>
+                <h2 class="product-price">₹ <span th:text="${product.price}"></span></h2>
+                <p class="product-weight">Weight: <span th:text="${product.weight}"></span> grams</p>
+                <div class="product-description">
+                    <p th:text="${product.description}"></p>
+                </div>
+                <a href="cart.html" th:href="@{/addToCart/{id}(id=${product.id})}" class="btn btn-custom">
+                    <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</body>
+</html>

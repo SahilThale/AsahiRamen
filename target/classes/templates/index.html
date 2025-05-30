@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <title>Asahi Ramen</title>
+    <style>
+        :root {
+    --primary-color: #F3EED9;    /* Light Cream (Background) */
+    --secondary-color: #3A1D14;  /* Deep Brown (Side Panel) */
+    --accent-color: #D72638;     /* Ramen Red (Highlights & Text) */
+    --white: #FFFFFF;            /* Pure White (Optional Usage) */
+    --text-color: #2B2B2B;       /* Dark Charcoal (Body Text) */
+     }
+
+
+        body, html {
+            padding: 0%;
+            height: 100%;
+            margin: 0;
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+        }
+
+        .navbar {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--accent-color) !important;
+            transform: translateY(-2px);
+        }
+
+        .navbar-brand img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            background-color: var(--primary-color);
+            position: relative;
+        }
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: linear-gradient(to bottom right, 
+                transparent 0%, transparent 49%, 
+                var(--white) 50%, var(--white) 100%);
+            clip-path: polygon(0 50%, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        .hero-content {
+            flex: 1;
+            padding-right: 5%;
+        }
+
+        .hero-content h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--secondary-color);
+            border-bottom: 3px solid var(--secondary-color);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--accent-color);
+            line-height: 1.8;
+        }
+
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            animation: bowlFloat 3s ease-in-out infinite;
+        }
+
+        .btn-custom {
+            background-color: #fff;
+            color: #000;
+            border: 2px solid #000;
+            padding: 8px 20px;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 0;
+            margin: 10px;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            box-shadow: 3px 3px 0 #000;
+        }
+
+        .btn-custom:hover {
+            background-color: #000;
+            color: #fff;
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0 #000;
+        }
+
+        .btn-custom:active {
+            transform: translate(3px, 3px);
+            box-shadow: none;
+        }
+
+        @keyframes bowlFloat {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        .about-section {
+            display: flex;
+            padding: 5rem;
+            background-color: var(--white);
+            position: relative;
+        }
+
+        .about-section::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: linear-gradient(to bottom left, 
+                transparent 0%, transparent 49%, 
+                var(--primary-color) 50%, var(--primary-color) 100%);
+            clip-path: polygon(0 0, 100% 50%, 100% 100%, 0 100%);
+        }
+
+        .about-image {
+            flex: 1;
+            padding-right: 3rem;
+        }
+
+        .about-image img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .about-content {
+            flex: 1;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-item {
+            background: var(--primary-color);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-item i {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .reservation-section {
+            display: flex;
+            align-items: center;
+            padding: 5rem;
+            background-color: var(--primary-color);
+            position: relative;
+            
+        }
+
+        .reservation-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: linear-gradient(to bottom right, 
+                transparent 0%, transparent 49%, 
+                var(--white) 50%, var(--white) 100%);
+            clip-path: polygon(0 50%, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        .reservation-content {
+            flex: 1;
+            text-align: left;
+            padding-right: 3rem;
+        }
+
+        .reservation-content h2 {
+            margin-bottom: 2rem;
+            color: var(--secondary-color);
+            font-size: 2.5rem;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .reservation-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .reservation-image img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .menu-section {
+            display: flex;
+            align-items: center;
+            padding: 5rem;
+            background-color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+       
+        .menu-section::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: linear-gradient(to bottom left, 
+                transparent 0%, transparent 49%, 
+                var(--primary-color) 50%, var(--primary-color) 100%);
+            clip-path: polygon(0 0, 100% 50%, 100% 100%, 0 100%);
+        }
+
+        .menu-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+           
+        }
+
+        .menu-content {
+            flex: 1;
+            text-align: left;
+            padding-left: 3rem;
+            order: 2;
+        }
+
+        .menu-content h2 {
+            margin-bottom: 2rem;
+            color: var(--secondary-color);
+            font-size: 2.5rem;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .menu-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 20px;
+           
+        }
+
+        .footer {
+            background-color: var(--primary-color);
+            color: var(--accent-color);
+            padding: 3rem 0;
+            position: relative;
+            margin-top: 0;
+        }
+
+        .footer h5 {
+            font-family: 'Fredoka', sans-serif;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            font-size: 1.8rem;
+        }
+
+        .footer p {
+            line-height: 1.8;
+        }
+
+        .footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer .social-links {
+            font-size: 1.5rem;
+        }
+
+        .footer .social-links a {
+            margin-right: 1rem;
+        }
+
+        .footer .fas, .footer .fab {
+            margin-right: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img th:src="@{/images/logo.png}" alt="Logo">
+            Asahi Ramen 
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto"></ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}" href="index.html"><i class="fas fa-home"></i> Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/shop}" href="shop.html"><i class="fas fa-utensils"></i> Our Ramen</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}" href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}" href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/cart}" href="cart.html"><i class="fas fa-shopping-cart"></i> Cart</a>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link cart-count" th:text="${cartCount}">0</span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/dashboard}" href="user_dashboard.html"><i class="fas fa-user-chef"></i> profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin}" href="adminHome.html"><i class="fas fa-user-chef"></i> Chefs</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1><i class="fas fa-bowl-food"></i> Asahi Ramen</h1>
+        <p>Experience the authentic taste of Japanese ramen, crafted with love and tradition. Our carefully selected ingredients and time-honored recipes bring you the perfect bowl of comfort.</p>
+        <a href="/shop" class="btn btn-custom">Explore Our Ramen</a>
+    </div>
+    <div class="hero-image">
+        <img th:src="@{/images/hero.png}" alt="Delicious Ramen Bowl" />
+    </div>
+</section>
+
+<!-- About Us Section -->
+<section class="about-section">
+    <div class="about-image">
+        <img th:src="@{/images/cat-shark.png}" alt="Cat riding shark illustration" />
+    </div>
+    <div class="about-content">
+        <h2><i class="fas fa-chopsticks"></i> Our Ramen Story</h2>
+        <p>Welcome to Retro Ramen House, where tradition meets modern taste. Each bowl is crafted with authentic recipes and the finest ingredients, bringing you the true essence of Japanese comfort food.</p>
+
+        <div class="feature-grid">
+            <div class="feature-item">
+                <i class="fas fa-motorcycle"></i>
+                <h3>Quick Delivery</h3>
+                <p>Hot and fresh to your doorstep</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-star"></i>
+                <h3>Premium Broth</h3>
+                <p>24-hour simmered perfection</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-phone-alt"></i>
+                <h3>Custom Orders</h3>
+                <p>Personalize your ramen bowl</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-heart"></i>
+                <h3>Made with Love</h3>
+                <p>Traditional recipes with care</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Reservation Section -->
+<section class="reservation-section">
+    <div class="reservation-content">
+        <h2><i class="fas fa-calendar-alt"></i> Book Your Experience</h2>
+        <p>Join us for an unforgettable dining experience. Reserve your table now and immerse yourself in the authentic flavors of our carefully crafted ramen.</p>
+        <a href="/reservation" class="btn btn-custom">Reserve a Table</a>
+    </div>
+    <div class="reservation-image">
+        <img th:src="@{/images/ramen-shop.png}" alt="Cozy Ramen Shop" />
+    </div>
+</section>
+
+<!-- Menu Section -->
+<section class="menu-section">
+    <div class="menu-image">
+        <img th:src="@{/images/menu.png}" alt="Our Special Menu Items">
+    </div>
+    <div class="menu-content">
+        <h2><i class="fas fa-book-open"></i> Discover Our Menu</h2>
+        <p>Explore our carefully curated menu featuring traditional Japanese ramen varieties and unique house specialties. From rich tonkotsu to light shoyu broths, each bowl tells its own story of flavor and tradition.</p>
+        <a href="/menu" class="btn btn-custom">View Full Menu</a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5><i class="fas fa-map-marker-alt"></i> Visit Us</h5>
+                <p>
+                    <a href="https://maps.app.goo.gl/JeDQZHjAWT5WnaZq6">Shop No. 4, Kamal Nivas, Jaidev Singh Nagar, Bhandup West, Mumbai, Maharashtra 400078</a><br>
+                    <i class="fas fa-phone"></i>+91-89288-75914<br>
+                    <i class="fas fa-envelope"></i> asahiramen276@gmail.com
+                </p>
+            </div>
+            <div class="col-md-4">
+                <h5><i class="fas fa-link"></i> Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="/shop"><i class="fas fa-bowl-food"></i> Our Ramen</a></li>
+                    <li><a href="/"><i class="fas fa-heart"></i> About Us</a></li>
+                    <li><a href="tel:9096765933"><i class="fas fa-envelope"></i> Contact</a></li>
+                    
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5><i class="fas fa-share-alt"></i> Follow Us</h5>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61557953823661&rdid=ilIRWsm6r2eJG7oz&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2FzdTm6X4N9FaLvMF3%2F#"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/asahi.ramen/profilecard/?igsh=MXZ6MjFycWNhdnZ6ag%3D%3D"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/company/asahiramen/"><i class="fab fa-twitter"></i></a>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12 text-center">
+                <p class="mb-0"><i class="far fa-copyright"></i> 2025 Asahi Ramen. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .footer {
+        background-color: var(--primary-color);
+        color: var(--accent-color);
+        padding: 3rem 0;
+        margin-top: 4rem;
+        
+    }
+
+    .footer h5 {
+        font-family: 'Fredoka', sans-serif;
+        color: var(--secondary-color);
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+        font-size: 1.8rem;
+    }
+
+    .footer p {
+        line-height: 1.8;
+    }
+
+    .footer a {
+        color: var(--accent-color);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .footer a:hover {
+        color: var(--secondary-color);
+    }
+
+    .footer .social-links {
+        font-size: 1.5rem;
+    }
+
+    .footer .social-links a {
+        margin-right: 1rem;
+    }
+
+    .footer .fas, .footer .fab {
+        margin-right: 10px;
+    }
+</style>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>

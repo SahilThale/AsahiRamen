@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Reservation | Asahi Ramen</title>
+    <style>
+        :root {
+            --primary-color: #F3EED9;    /* Light Cream (Background) */
+            --secondary-color: #3A1D14;  /* Deep Brown (Side Panel) */
+            --accent-color: #D72638;     /* Ramen Red (Highlights & Text) */
+            --white: #FFFFFF;            /* Pure White (Optional Usage) */
+            --text-color: #2B2B2B;       /* Dark Charcoal (Body Text) */
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background-color: var(--white) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .navbar-brand {
+            font-family: 'Fredoka', sans-serif;
+            color: var(--secondary-color) !important;
+            font-weight: 700;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--text-color) !important;
+            font-weight: 500;
+            padding: 0.8rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--accent-color) !important;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            padding-top: 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-container {
+            background-color: var(--white);
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 3px 3px 0 var(--secondary-color);
+            max-width: 500px;
+            margin: 2rem auto;
+            border: 2px solid var(--secondary-color);
+            position: relative;
+            background-image: url('/images/CatBg.png');
+            background-position: center bottom;
+            background-repeat: no-repeat;
+            background-size: 400px auto;
+        }
+
+        .form-control {
+            border: 2px solid var(--secondary-color);
+            border-radius: 0;
+            padding: 0.8rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: none;
+        }
+
+        .btn-custom {
+            background-color: var(--white);
+            color: var(--secondary-color);
+            border: 2px solid var(--secondary-color);
+            padding: 8px 20px;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 0;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            box-shadow: 3px 3px 0 var(--secondary-color);
+        }
+
+        .btn-custom:hover {
+            background-color: var(--secondary-color);
+            color: var(--white);
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0 var(--secondary-color);
+        }
+
+        .btn-custom:active {
+            transform: translate(3px, 3px);
+            box-shadow: none;
+        }
+
+        h2 {
+            font-family: 'Fredoka', sans-serif;
+            color: var(--secondary-color);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            border-bottom: 3px solid var(--secondary-color);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        label {
+            color: var(--text-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-family: 'Quicksand', sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img th:src="@{/images/logo.png}" alt="Logo" style="height: 40px; margin-right: 10px;">
+            Asahi Ramen
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto"></ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}" href="index.html"><i class="fas fa-home"></i> Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/shop}" href="shop.html"><i class="fas fa-utensils"></i> Our Ramen</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/cart}" href="cart.html"><i class="fas fa-shopping-cart"></i> Cart</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="login-container">
+        <h2 class="text-center"><i class="fas fa-calendar-alt"></i> Book a Table</h2>
+        <p class="text-center mb-4">Reserve your spot at Retro Ramen House</p>
+        
+        <form action="/reservation/submit" method="post">
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" class="form-control" id="fullName" name="fullName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="text" class="form-control" id="phone" name="phone" required>
+            </div>
+
+            <div class="form-group">
+                <label for="guests">Number of Guests</label>
+                <input type="number" class="form-control" id="guests" name="guests" min="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="date">Date</label>
+                <input type="date" class="form-control" id="date" name="date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="time">Time</label>
+                <input type="time" class="form-control" id="time" name="time" required>
+            </div>
+
+            <div class="form-group">
+                <label for="specialRequests">Special Requests</label>
+                <textarea class="form-control" id="specialRequests" name="specialRequests" rows="3"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-custom btn-block">Reserve Now</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+</body>
+</html>

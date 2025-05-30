@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <title>Checkout | Asahi Ramen</title>
+    <style>
+        :root {
+            --primary-color: #F3EED9;    /* Light Cream (Background) */
+            --secondary-color: #3A1D14;  /* Deep Brown (Side Panel) */
+            --accent-color: #D72638;     /* Ramen Red (Highlights & Text) */
+            --white: #FFFFFF;            /* Pure White (Optional Usage) */
+            --text-color: #2B2B2B;       /* Dark Charcoal (Body Text) */
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+        }
+
+        .navbar {
+            background-color: var(--white) !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 2rem;
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--text-color) !important;
+            font-weight: 500;
+            padding: 0.8rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--accent-color) !important;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            padding-top: 2rem;
+        }
+
+        .card {
+            background-color: var(--white);
+            border: 2px solid var(--text-color);
+            border-radius: 0;
+            box-shadow: 3px 3px 0 var(--text-color);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .form-control {
+            border: 2px solid var(--text-color);
+            border-radius: 0;
+            padding: 0.8rem;
+            font-size: 1rem;
+            box-shadow: 3px 3px 0 var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 3px 3px 0 var(--text-color);
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: var(--white);
+            border: 2px solid var(--text-color);
+            padding: 8px 20px;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 0;
+            margin: 10px 0;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 3px 3px 0 var(--text-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--text-color);
+            color: var(--white);
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0 var(--text-color);
+        }
+
+        .list-group-item {
+            background-color: transparent;
+            border: 2px solid var(--text-color);
+            color: var(--text-color);
+            padding: 1rem;
+            margin-bottom: -2px;
+        }
+
+        label {
+            color: var(--text-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .dark-grey-text {
+            color: var(--accent-color) !important;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .dark-grey-text:hover {
+            color: var(--secondary-color) !important;
+            text-decoration: none;
+        }
+
+        h5 {
+            font-family: 'Fredoka', sans-serif;
+            color: var(--secondary-color);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img th:src="@{/images/logo.png}" alt="Logo" style="height: 40px; margin-right: 10px;">
+           Asahi Ramen
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto"></ul>
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/}" href="index.html"><i class="fas fa-home"></i> Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/shop}" href="shop.html"><i class="fas fa-store"></i> Shop</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}" href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}" href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/cart}" href="cart.html"><i class="fas fa-shopping-cart"></i> Cart</a>
+                </li>
+                <li class="nav-item active">
+                    <span class="nav-link" th:text="${cartCount}">0</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <!--Section: Block Content-->
+    <section class="mt-5 mb-4">
+        <!--Grid row-->
+        <div class="row">
+            <!--Grid column-->
+            <div class="col-lg-8 mb-4">
+                <!-- Card -->
+                <div class="card wish-list pb-1">
+                    <div class="card-body">
+                        <h5 class="mb-2">Billing details</h5>
+
+                        <form action="#" method="post" th:action="@{/orderPlaced}">
+                            <!-- Grid row -->
+                            <div class="row">
+                                <!-- First name -->
+                                <div class="col-lg-6">
+                                    <div class="md-form md-outline mb-0 mb-lg-4">
+                                        <label for="firstName">First name</label>
+                                        <input type="text" id="firstName" name="firstName" required class="form-control mb-0 mb-lg-2">
+                                    </div>
+                                </div>
+                                <!-- Last name -->
+                                <div class="col-lg-6">
+                                    <div class="md-form md-outline">
+                                        <label for="lastName">Last name</label>
+                                        <input type="text" id="lastName" name="lastName" required class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Country -->
+                            <div class="d-flex flex-wrap">
+                                <div class="select-outline position-relative w-100">
+                                    <label>Country - <strong>INDIA</strong></label>
+                                </div>
+                            </div>
+
+                            <!-- Address Line 1 -->
+                            <div class="md-form md-outline mt-2">
+                                <label for="addressLine1">Address (Line 1)</label>
+                                <input type="text" id="addressLine1" name="addressLine1" required placeholder="House number and street name" class="form-control">
+                            </div>
+
+                            <!-- Address Line 2 -->
+                            <div class="md-form md-outline mt-2">
+                                <label for="addressLine2">Address (Line 2)</label>
+                                <input type="text" id="addressLine2" name="addressLine2" placeholder="Apartment, suite, unit etc. (optional)" class="form-control">
+                            </div>
+
+                            <!-- Postcode / ZIP -->
+                            <div class="md-form md-outline mt-3">
+                                <label for="postcode">Postcode / ZIP</label>
+                                <input type="text" id="postcode" name="postcode" maxlength="6" minlength="6" required class="form-control">
+                            </div>
+
+                            <!-- Town / City -->
+                            <div class="md-form md-outline mt-2">
+                                <label for="city">Town / City</label>
+                                <input type="text" id="city" name="city" required class="form-control">
+                            </div>
+
+                            <!-- Phone -->
+                            <div class="md-form md-outline mt-2">
+                                <label for="phone">Phone</label>
+                                <input type="tel" id="phone" name="phone" minlength="10" maxlength="10" required class="form-control">
+                            </div>
+
+                            <!-- Email address -->
+                            <div class="md-form md-outline mt-2">
+                                <label for="email">Email address</label>
+                                <input type="email" id="email" name="email" required class="form-control">
+                            </div>
+
+                            <hr>
+
+                            <!-- Additional information -->
+                            <div class="md-form md-outline mt-2">
+                                <label for="additionalInfo">Additional information</label>
+                                <textarea id="additionalInfo" name="additionalInfo" class="form-control" rows="4"></textarea>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary btn-block waves-effect waves-light">Place Order</button>
+                        </form>
+                    </div>
+                </div>
+                <!-- Card -->
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-lg-4">
+                <!-- Card -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="mb-3">The total amount</h5>
+
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                Amount Payable
+                                <span>₹<span th:text="${total}"></span></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                Shipping
+                                <span>Gratis</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                                <div>
+                                    <strong>The total amount of</strong>
+                                    <strong>
+                                        <p class="mb-0">(including VAT)</p>
+                                    </strong>
+                                </div>
+                                <span><strong>₹<span th:text="${total}"></span></strong></span>
+                            </li>
+                        </ul>
+
+                        <a class="dark-grey-text d-flex justify-content-between" data-toggle="collapse" href="#collapseExample"
+                           aria-expanded="false" aria-controls="collapseExample">
+                            Add a discount code (optional)
+                            <span><i class="fas fa-chevron-down pt-1"></i></span>
+                        </a>
+
+                        <div class="collapse" id="collapseExample">
+                            <div class="mt-3">
+                                <div class="md-form md-outline mb-0">
+                                    <input type="text" id="discount-code" class="form-control font-weight-light" placeholder="Enter discount code">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card -->
+            </div>
+            <!--Grid column-->
+        </div>
+        <!--Grid row-->
+    </section>
+    <!--Section: Block Content-->
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>
